@@ -309,9 +309,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				GLCapabilities caps = GL.getCapabilities();
 
-				if (!caps.OpenGL41 || caps.glTexStorage3D == 0)
+				if (!caps.OpenGL31)
 				{
-					throw new RuntimeException("OpenGL 4.1 is required but not available");
+					throw new RuntimeException("OpenGL 3.1 is required but not available");
 				}
 
 				if (!caps.OpenGL43 && computeMode == ComputeMode.OPENGL)

@@ -50,7 +50,19 @@ class TextureManager
 
 		int textureArrayId = GL43C.glGenTextures();
 		GL43C.glBindTexture(GL43C.GL_TEXTURE_2D_ARRAY, textureArrayId);
-		GL43C.glTexStorage3D(GL43C.GL_TEXTURE_2D_ARRAY, 8, GL43C.GL_RGBA8, TEXTURE_SIZE, TEXTURE_SIZE, textures.length);
+		if (GL.getCapabilities().glTexStorage3D != 0)
+		{
+			GL43C.glTexStorage3D(GL43C.GL_TEXTURE_2D_ARRAY, 8, GL43C.GL_RGBA8, TEXTURE_SIZE, TEXTURE_SIZE, textures.length);
+		}
+		else
+		{
+			int size = TEXTURE_SIZE;
+			for (int i = 0; i < 8; i++)
+			{
+				GL43C.glTexImage3D(GL43C.GL_TEXTURE_2D_ARRAY, i, GL43C.GL_RGBA8, size, size, textures.length, 0, GL43C.GL_RGBA, GL43C.GL_UNSIGNED_BYTE, 0);
+				size /= 2;
+			}
+		}
 
 		GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D_ARRAY, GL43C.GL_TEXTURE_MIN_FILTER, GL43C.GL_NEAREST);
 		GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D_ARRAY, GL43C.GL_TEXTURE_MAG_FILTER, GL43C.GL_NEAREST);
